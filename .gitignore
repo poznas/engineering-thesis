@@ -5,9 +5,6 @@ out/
 *.log
 *.toc
 
-# PDF output - usually a bad idea to keep this in Git
-*hydra_aimo.pdf
-
 # Latexmk
 *.fdb_latexmk
 
@@ -28,3 +25,6 @@ out/
 *.xcf
 
 .idea/
+*.pdf
+*.bib 
+*run.xml
