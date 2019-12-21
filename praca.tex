@@ -111,14 +111,14 @@ backend=bibtex
 %\titlePL{Przygotowanie bardzo długiej i pasjonującej pracy dyplomowej w~systemie~\LaTeX}
 %\titleEN{Preparation of a very long and fascinating bachelor or master thesis in \LaTeX}
 
-\titlePL{Przygotowanie pracy dyplomowej w~systemie~\LaTeX}
+\titlePL{System lokalizacji spotów oparty na skalowalnej architekturze mikroserwisów dla aplikacji SurfAdvisor}
 \titleEN{Thesis in \LaTeX}
 
 
-\shorttitlePL{Przygotowanie pracy dyplomowej w~systemie \LaTeX} % skrócona wersja tytułu jeśli jest bardzo długi
-\shorttitleEN{Preparation of a long and fascinating thesis in \LaTeX}
+\shorttitlePL{System mapy spotów oparty na skalowalnej architekturze mikroserwisów dla aplikacji SurfAdvisor} % skrócona wersja tytułu jeśli jest bardzo długi
+\shorttitleEN{Spot map system based on a scalable microservice architecture for SurfAdvisor application}
 
-\thesistype{Praca dyplomowa magisterska}
+\thesistype{Praca dyplomowa inżynierska}
 %\thesistype{Master of Science Thesis}
 
 \supervisor{dr inż. Grzegorz Rogus}
@@ -135,7 +135,7 @@ backend=bibtex
 \faculty{Wydział Elektrotechniki, Automatyki,\protect\\[-1mm] Informatyki i Inżynierii Biomedycznej}
 %\faculty{Faculty of Electrical Engineering, Automatics, Computer Science and Biomedical Engineering}
 
-\acknowledgements{Serdecznie dziękuję \dots tu ciąg dalszych podziękowań np. dla promotora, żony, sąsiada itp.}
+\acknowledgements{Serdecznie dziękuję \dots tu ciąg dalszych podziękowań np. dla promotora, żony, sąsiada itp.} %TODO
 
 
 \setlength{\cftsecnumwidth}{10mm}
@@ -162,10 +162,12 @@ backend=bibtex
 \tableofcontents
 \clearpage
 
-\include{rozdzial3}
-\include{rozdzial1}
-\include{rozdzial2}
-\include{tests}
+\include{intro}
+\include{srs}
+\include{tech-stack}
+\include{implementation}
+\include{autoscaling}
+\include{summary}
 
 
 
