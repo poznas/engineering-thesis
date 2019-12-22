@@ -10,3 +10,54 @@ AWS innowacje wprowadza już na poziomie hardware'u - projektuje własne wyspecj
 Jednym z najnowszych przykładów jest Nitro Card, 
 który redefiniuje tradycyjne podejście do wirtualizacji obniżając przy tym koszty, zwiększając wydajność i bezpieczeństwo \cite{AWS-Nitro}.
 
+\subsection{EC2}
+Podstawowy produkt AWS zapewniający nam wirtualne lub {\em bare metal} instancje serwerów. 
+Przychodzący i wychodzący ruch internetowy kontrolujemy przy pomocy wirtualnego firewalla - Security Group.
+Poprzez mechanizm EC2 Auto Scaling możemy zdefiniować zasady ich skalowania horyzontalnego do aktualnych potrzeb.
+Oferowane typy instancji różnią się dedykowanym przeznaczeniem \cite{AWS-Nitro}:
+
+\begin{itemize}
+    \item
+    \textbf{M5: General Purpose}\\
+    {\em Monolityczne aplikacje biznesowe}
+    
+    \item
+    \textbf{T3: General Purpose - Burstable}\\
+    {\em Mikroserwisy, interaktywne aplikacje wymagające niskiej latencji}
+
+    \item
+    \textbf{C5: Compute Optimized}\\
+    {\em Aplikacje wymagające wysokiej wydajności}
+
+    \item
+    \textbf{P3dn: Machine Learning}\\
+    {\em Wysoko wydajne uczenie maszynowe}
+
+    \item
+    i wiele innych
+\end{itemize} 
+
+Obraz możemy wybrać z bazowego zestawu Linux'ów i Windows'ów lub zasięgnąć AWS Marketplace, gdzie zamieszczane są obrazy budowane przez szerszą społeczność.
+
+\subsection{DynamoDB}
+Baza danych NoSQL w pełni zarządzana przez AWS. 
+Zaimplementowana z myślą o wysokiej wydajności niezależnie od aktualnej skali, operacje realizowane są w jedno cyfrowej ilości milisekund.
+Od użytkownika wymaga się jedynie zdefiniować strukturę tabeli. Utrzymanie i skalowanie bierze na siebie AWS \cite{AWS-O}.
+
+\subsection{S3}
+Wszechstronny serwis do przechowywania plików, używany często przez inne produkty AWS {\em (np. DynamoDB przechowuje backup'y na S3)}. 
+Jednym z popularniejszych przypadków użycia jest hostowanie na S3 aplikacji webowych. 
+Jak każdy z podstawowych serwisów zarządzanych przed AWS, S3 jest przygotowane na każdą skalę, zachowując przy tym wydajność i bezpieczeństwo \cite{AWS-O}.
+
+\subsection{Route53}
+Bogaty, zintegrowany z platformą serwis DNS. Najczęściej używany by nakierować ruch na instancje EC2. 
+Udostępniona jest również opcja zakupu domeny bezpośrednio w konsoli webowej AWS co przyspiesza gotowość jej użycia.
+
+\subsection{CloudFormation}
+Obowiązkowe narzędzie przy pracy z większą ilością instancji produktów AWS. 
+Całą swoją infrastrukturę definiuje się w czytelnym formacie pliku tekstowego {\em yaml} lub {\em json}.
+Z tak przygotowanym plikiem przełożenie definicji na świat rzeczywisty jest dosłownie jednym kliknięciem. 
+Równie łatwo wykonamy aktualizację lub pozbędziemy się wszystkich utworzonych produktów \cite{AWS-O}.
+Taką automatyzację udostępnia również open source'owy odpowiednik tego narzędzia - Terraform.
+    
+
