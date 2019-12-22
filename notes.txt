@@ -1,0 +1,9 @@
+https://d1.awsstatic.com/whitepapers/aws-overview.pdf
+https://aws.amazon.com/what-is-aws/
+
+https://aws.amazon.com/solutions/case-studies/amazon/
+
+https://aws.amazon.com/ec2/nitro/
+https://perspectives.mvdirona.com/2019/02/aws-nitro-system/
+
+https://d1.awsstatic.com/events/reinvent/2019/REPEAT_2_Powering_next-gen_Amazon_EC2_Deep_dive_into_the_Nitro_system_CMP303-R2.pdf
