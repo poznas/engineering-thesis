@@ -59,5 +59,36 @@ Całą swoją infrastrukturę definiuje się w czytelnym formacie pliku tekstowe
 Z tak przygotowanym plikiem przełożenie definicji na świat rzeczywisty jest dosłownie jednym kliknięciem. 
 Równie łatwo wykonamy aktualizację lub pozbędziemy się wszystkich utworzonych produktów \cite{AWS-O}.
 Taką automatyzację udostępnia również open source'owy odpowiednik tego narzędzia - Terraform.
+
+
+\section{Docker}
+
+\subsection{Maszyny wirtualne}
+
+Tradycyjne podejście do wirtualizacji skupia się na abstrakcji fizycznego sprzętu. 
+Pozwala to na traktowanie jednego hosta jako wiele serwerów. 
+Każda wirtualna maszyna zawiera pełną kopię systemu operacyjnego, wszystkie potrzebne narzędzia i pliki docelowej aplikacji, sumując wszystko często otrzymamy dziesiątki GB.
+Uruchomienie takich jednostek jest dosyć wolne {\em (kilka minut)} \cite{docker-c}.
     
+\subsection{Docker containers}
+
+Docker natomiast jest abstrakcją systemu operacyjnego. Kontenery dockera są odciążone od warstwy OS i zawierają tylko aplikację i potrzebne jej narzędzia.
+Każdy kontener działa jako wyizolowany proces. Są dużo lżejsze {\em (zazwyczaj dziesiątki MB)}, 
+więc ten host pomieści więcej aplikacji uruchomionych jako kontenery niż jako wirtualne maszyny \cite{docker-c}.
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=0.45\textwidth]{img/docker-layers}
+		\hspace{5mm}
+		\includegraphics[width=0.45\textwidth]{img/vm-layers}
+	\end{center}
+	\caption{Docker containers vs VMs \cite{docker-c}.}
+	\label{fig:docker-vms}
+\end{figure}
+
+\subsection{Docker image}
+Jest to plik złożony najczęściej z kilku warstw \cite{docker-doc}. 
+Najczęściej szystkie warstwy oprócz wierchniej są \emph{read-only}, stanowią narzędzia wykorzystywane przez docelową wiechnią aplikację \emph{(np. java sdk)}.
+Najwyższa warstwa budowana jest przy pomocy pliku z instrukcją - \emph{\textbf{Dockerfile}}, gdzie dokładamy naszą aplikację.
+Przygotowany w ten sposób image jest gotowy do uruchomienia jako kontener. Dużym udogodnieniem dla użytkownika jest globalne publiczne repozytorium docker images - \emph{\textbf{hub.docker.com}}.
 
