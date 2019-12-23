@@ -100,3 +100,31 @@ Projekt jest rezultatem ponad 10-cio letniego doświadczenia Google w tej dziedz
 Rozwiązanie zyskało na nowych pomysłach społeczności i adaptacji przez wszystkich wiodących dostawców usług chmurowych.
 Istnieje również możliwość zastosowania Kubernetes we własnej serwerowni, 
 co oznacza duży krok w kierunku jednolitego środowiska niezależnie od sposobu hostowania systemu naszej aplikacji.
+Całą strukturę kontenerów jak również i wszystkie inne potrzebne zasoby definiujemy w plikach tekstowych {\em yaml} lub {\em json}.
+
+\subsection{Podstawowe funkcje Kubernetes}
+
+\begin{itemize}
+    \item
+    \textbf{Service discovery \& load balancing}\\
+    Funkcjonalności Kubernetes realizują skonteneryzowane aplikacje systemowe niewidoczne dla użytkownika na porządku dziennym.
+    Wśród nich znajdziemy grupę odpowiedzialną za wewnątrz systemowy DNS. Ruch rozkładany jest na ukryte za serwisową domeną instancje aplikacji. 
+    
+    \item
+    \textbf{Storage orchestration}\\
+    Automatyczne utworzenie zadanego zasobu pamięci na podstawie definicji tekstowej i dołączenie jej pod wskazany kontener.
+
+    \item
+    \textbf{Automatic bin packing}\\
+    Mając do dyspozycji zestaw nodów (hostów), na których umożliwiamy stawianie kontenerów, Kubernetes sam podejmuje decyzje na temat wdrożenia.
+    Dzięki temu nie musimy się martwić o przeciążenie pojedynczego noda.
+    Poprzez definicje wymagań \emph{(CPU, RAM)} danego kontenera możemy natomiast dostarczyć wskazówki. 
+
+    \item
+    \textbf{Autoscaling, Self-healing, Automated rollouts and rollbacks}\\
+    Za pomocą plików tekstowych definiujemy oczekiwaną liczbę instancji naszej aplikacji i jej zasady skalowania horyzontalnego \emph{(wpływ CPU, RAM)}.
+    Ponadto możemy określić sygnały \emph{(np. zapytanie http)} w oparciu o które Kubernetes może weryfikować zdolność do pracy danej instancji, a następnie podjąć próby jej restartu.
+    W przypadku utracenia całego noda (hosta) utracone tam kontenery zostaną przerzucone na resztę nodów do czasu startu nowego.
+    Domyślnie update kontenera \emph{(np. do nowej wersji docker image)} polega wpierw na uruchomieniu jego nowej wersji, a dopiero potem przepięciu ruchu i zabiciu starej.
+    Jeśli nowy kontener nie spełni wymagań żywotności, zostanie on wycofany. Taki proces zapewnia 100\% dostępności aplikacji \cite{k8s-what}.
+\end{itemize} 
