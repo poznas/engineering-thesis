@@ -53,7 +53,7 @@ Jak każdy z podstawowych serwisów zarządzanych przed AWS, S3 jest przygotowan
 Bogaty, zintegrowany z platformą serwis DNS. Najczęściej używany by nakierować ruch na instancje EC2. 
 Udostępniona jest również opcja zakupu domeny bezpośrednio w konsoli webowej AWS co przyspiesza gotowość jej użycia.
 
-\subsection{CloudFormation}
+\subsection{CloudFormation} \label{cloudFormation}
 Obowiązkowe narzędzie przy pracy z większą ilością instancji produktów AWS. 
 Całą swoją infrastrukturę definiuje się w czytelnym formacie pliku tekstowego {\em yaml} lub {\em json}.
 Z tak przygotowanym plikiem przełożenie definicji na świat rzeczywisty jest dosłownie jednym kliknięciem. 
@@ -88,7 +88,15 @@ więc ten host pomieści więcej aplikacji uruchomionych jako kontenery niż jak
 
 \subsection{Docker image}
 Jest to plik złożony najczęściej z kilku warstw \cite{docker-doc}. 
-Najczęściej szystkie warstwy oprócz wierchniej są \emph{read-only}, stanowią narzędzia wykorzystywane przez docelową wiechnią aplikację \emph{(np. java sdk)}.
+Najczęściej wszystkie warstwy oprócz wierchniej są \emph{read-only}, stanowią narzędzia wykorzystywane przez docelową wiechnią aplikację \emph{(np. java sdk)}.
 Najwyższa warstwa budowana jest przy pomocy pliku z instrukcją - \emph{\textbf{Dockerfile}}, gdzie dokładamy naszą aplikację.
 Przygotowany w ten sposób image jest gotowy do uruchomienia jako kontener. Dużym udogodnieniem dla użytkownika jest globalne publiczne repozytorium docker images - \emph{\textbf{hub.docker.com}}.
 
+
+\section{Kubernetes}
+W zarządzaniu większą ilością produktów AWS stanowiących naszą platformę pomoże nam opisany wcześniej CloudFormation \emph{(\ref{cloudFormation})}. 
+W przypadku zarządzania skonteneryzowanymi aplikacjami posłużymy się wiodących standardem w tej dziedzinie - Kubernetes.
+Projekt jest rezultatem ponad 10-cio letniego doświadczenia Google w tej dziedzinie opublikowanym na zasadach open-source w 2014 roku \cite{k8s-what}.
+Rozwiązanie zyskało na nowych pomysłach społeczności i adaptacji przez wszystkich wiodących dostawców usług chmurowych.
+Istnieje również możliwość zastosowania Kubernetes we własnej serwerowni, 
+co oznacza duży krok w kierunku jednolitego środowiska niezależnie od sposobu hostowania systemu naszej aplikacji.
