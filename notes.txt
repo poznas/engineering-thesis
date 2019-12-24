@@ -10,3 +10,9 @@ https://d1.awsstatic.com/events/reinvent/2019/REPEAT_2_Powering_next-gen_Amazon_
 
 https://www.docker.com/resources/what-container
 https://docs.docker.com/v17.09/engine/userguide/storagedriver/imagesandcontainers/
+
+
+https://miro.medium.com/max/1016/1*wlB5VaWYYQaKBq7gAYtp0Q.png
+https://www.burlutsky.su/management/kubernetes-for-begginers/
+https://pascalnaber.files.wordpress.com/2017/10/ingressoverview.png
+https://miro.medium.com/max/3308/1*o_R_ZAUpTPRRPKw87LgTMQ.png
