@@ -177,6 +177,37 @@ Ruch jest następnie rozkładany pomiędzy cały \cw{ReplicaSet} aplikacji \cite
 
 \subsubsection{Ingress}
 Częstą praktyką jest utworzenie jednego punktu dostępu dla całego \cw{Cluster}’a. 
-Wdrażamy wtedy jedną z implementacji \emph{Ingress Controller} (najpopularniejsza to \emph{nginx}, w projekcie używam \emph{Istio}), która stanowi ruter dla pozostałych \cw{Service}’ów. 
+Wdrażamy wtedy jedną z implementacji \emph{Ingress Controller} (najpopularniejsza to \emph{nginx}, w projekcie używam \emph{Istio} [\ref{istio}]), która stanowi ruter dla pozostałych \cw{Service}’ów. 
 \cw{Ingress} to obiekt definiujący rutowanie nadchodzących pakietów (np. na podstawie ścieżki http) \cite{k8s-cpts}.
+
+
+\section{Istio}
+\label{istio}
+
+\begin{figure}[!ht]
+	\begin{center}
+		\includegraphics[width=1\textwidth]{img/istio}
+	\end{center}
+	\caption{Zastosowanie Istio w Kubernetes \cite{istio-traffic}.}
+\end{figure}
+
+Wraz z transformacją z monolitycznej aplikacji do sieci mikroserwisów pojawia się wiele nowych problemów związanych z komunikacją pomiędzy nimi.
+Kubernetes nie dostarcza żadnego domyślnego rozwiązania, by nie ograniczyć doboru przez użytkownika.
+Istio jest jednym z nich, wypuszczone przez \emph{Lyft} i zaadaptowane później przez m.in. \emph{Google} i \emph{Microsoft}. \cite{istio-what}
+Istio zapewnia nam:
+
+\begin{itemize}
+    \item
+    Szczegółową kontrolę nad zachowaniem się ruchu poprzez definicje rutowań, ponowień, failovers i circuit breakers.
+    
+    \item
+    Automatyczne metryki, odkładanie logów i śledzenie ruchu w naszym \cw{Cluster}'rze.
+
+    \item
+    Bogate narzędzia do wprowadzenia autentykacji i autoryzacji
+    
+\end{itemize} 
+
+Włączenie funkcjonalności Istio do \cw{Pod}'a odbywa się poprzez wstrzykniecie pobocznego kontenera, 
+który stanowi proxy dla głównego kontenera aplikacji.
 
