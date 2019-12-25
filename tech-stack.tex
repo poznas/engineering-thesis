@@ -95,7 +95,7 @@ Przygotowany w ten sposób image jest gotowy do uruchomienia jako kontener. Duż
 
 \section{Kubernetes}
 W zarządzaniu większą ilością produktów AWS stanowiących naszą platformę pomoże nam opisany wcześniej CloudFormation \emph{(\ref{cloudFormation})}. 
-W przypadku zarządzania skonteneryzowanymi aplikacjami posłużymy się wiodących standardem w tej dziedzinie - Kubernetes.
+Do orkiestracji skonteneryzowanymi aplikacjami posłużymy się wiodącym standardem w tej dziedzinie - Kubernetes.
 Projekt jest rezultatem ponad 10-cio letniego doświadczenia Google w tej dziedzinie opublikowanym na zasadach open-source w 2014 roku \cite{k8s-what}.
 Rozwiązanie zyskało na nowych pomysłach społeczności i adaptacji przez wszystkich wiodących dostawców usług chmurowych.
 Istnieje również możliwość zastosowania Kubernetes we własnej serwerowni, 
@@ -116,6 +116,7 @@ Całą strukturę kontenerów jak również i wszystkie inne potrzebne zasoby de
 
     \item
     \textbf{Automatic bin packing}\\
+    \label{bin-packing}
     Mając do dyspozycji zestaw nodów (hostów), na których umożliwiamy stawianie kontenerów, Kubernetes sam podejmuje decyzje na temat wdrożenia.
     Dzięki temu nie musimy się martwić o przeciążenie pojedynczego noda.
     Poprzez definicje wymagań \emph{(CPU, RAM)} danego kontenera możemy natomiast dostarczyć wskazówki. 
@@ -139,18 +140,43 @@ Całą strukturę kontenerów jak również i wszystkie inne potrzebne zasoby de
 \end{figure}
 
 \subsubsection{Cluster}
-
+\cw{Node} jest pojedynczą jednostką obliczeniową, może być to fizyczny komputer lub jak w większości przypadków - wirtualna maszyna. 
+\cw{Cluster} to grupa \cw{Node}'ów stanowiąca jeden organizm. 
+Wdrażając aplikacje nie specyfikujemy na którym \cw{Node}'ie mają stanąć nowe kontenery. Kubernetes nas w tym wręcza \emph{(\ref{bin-packing})}.
 
 \subsubsection{Pod}
+\cw{Pod} jest najmniejszym obiektem w świecie Kubernetes jaki możemy wdrożyć. Stanowi pojedynczą instancję aplikacji. 
+Najczęśniej zawiera jeden kontener, choć może zawierać ich więcej. 
+Kontenery wewnątrz \cw{Pod}'a współdzielą zasoby i unikalny adres IP przydzielony przez orkiestratora \cite{k8s-cpts}.
 
-
-\subsubsection{ReplicaSet}
-
-
-\subsubsection{Deployment}
+\subsubsection{ReplicaSet \& Deployment}
+Zadaniem \cw{ReplicaSet} jest utrzymanie danej liczby identycznych \cw{Pod}'ów \emph{(instancji danej aplikacji)}.
+Jednak w większości przypadków nie będziemy pracować bezpośrednio z \cw{ReplicaSet} tylko z obiektem wyżej w hierarchii - \cw{Deployment}.
+Poprzez niego przeskalujemy oczekiwaną liczbę \cw{Pod}'ów i przeporwadzimy \emph{rolling update} \cite{k8s-cpts}.
 
 
 \subsubsection{Service}
+Sposób wystawienia \cw{Pod}'ów aplikacji jako serwis dostępny w sieci. Pozostałe aplikacje odnoszą się do niego korzystając z jego węwnątrz \cw{Cluster}'owej nazwy DNS.
+Ruch jest następnie rozkładany pomiędzy cały \cw{ReplicaSet} aplikacji \cite{k8s-cpts}. Do typów \cw{Service} należą: 
+
+\begin{itemize}
+    \item
+    \textbf{ClusterIP}\\
+    Dostęp tylko wewnątrz \cw{Cluster}'a
+    
+    \item
+    \textbf{NodePort}\\
+    Dostęp również poza \cw{Cluster}'em poprzez:\\ 
+    \emph{<adres IP dowolnego }\cw{Noda}\emph{>:<zdefiniowany port }\cw{Service}\emph{'u>}
+
+    \item
+    \textbf{LoadBalancer}\\
+    \cw{Service} jest wystawiony poprzez \emph{LoadBalancer} utworzony przez dostawcę platformy chmurowej, na której działa nasz \cw{Cluster}.
+\end{itemize} 
 
 
 \subsubsection{Ingress}
+Częstą praktyką jest utworzenie jednego punktu dostępu dla całego \cw{Cluster}’a. 
+Wdrażamy wtedy jedną z implementacji \emph{Ingress Controller} (najpopularniejsza to \emph{nginx}, w projekcie używam \emph{Istio}), która stanowi ruter dla pozostałych \cw{Service}’ów. 
+\cw{Ingress} to obiekt definiujący rutowanie nadchodzących pakietów (np. na podstawie ścieżki http) \cite{k8s-cpts}.
+
