@@ -57,7 +57,6 @@ Jako administrator możemy się dostać do subdomen takich jak:
     \textbf{firebase-auth-connector}\\ 
     Warstwa pośrednia pomiędzy Istio \emph{Ingress Controller} a istniejącym serwisem Firebase.
     
-
     \item
     \textbf{dictionary-service}\\ 
     Repozytorium literałów wyświetlanych w aplikacji mobilnej.
@@ -78,30 +77,74 @@ Jako administrator możemy się dostać do subdomen takich jak:
 
 
 
-
 \section{IaC - Infrastructure as Code}
 
-(3-5s) jak ja to realizuję w projekcie poprzez CloudFormation, Kubernetes i Jenkins
+Jest to podejście do zarządzania infrastrukturą \emph{(siecią, wirtualnymi maszynami, kontenerami etc.)} poprzez pliki tekstowe, 
+których treść w sposób jednoznaczny definiuje potrzebne zasoby. 
+Taką deklaratywną formę konfiguracji bardzo łatwo można śledzić poprzez ten system kontroli wersji co ten używany wokół kodu aplikacji.
+IaC jest odpowiedzią na problem różnic pomiędzy środowiskami narastającymi jeszcze bardziej z czasem, jakie powodowały ich manualne imperatywne modyfikacje.
+Założeniem IaC jest \textbf{idempotentność} wdrożeń definicji z plików - za każdym razem rezultatem ma być takie samo środowisko \cite{iac-ms}.
+
+W projekcie realizuje tę koncepcję stawiając cały system w czterech krokach. 
+Pierwsze trzy stawiają \cw{Cluster} na AWS, są w pełni zautomatyzowane: \emph{CloudFormation}, \emph{Kops} i \emph{Kubernetes}.
+Ostatni wdraża domenowe aplikacje, wymaga paru kliknięć w konsoli webowej \emph{Jenkins}'a. 
 
 \subsection{CloudFormation}
+\label{iac:cf}
 
 \begin{figure}[!ht]
 	\begin{center}
-		\includegraphics[width=1\textwidth]{img/IAC-step1}
+		\includegraphics[width=0.9\textwidth]{img/IAC-step1}
 	\end{center}
 	\caption{Inicjacja Cluter'a SurfAdvisor - 1.CloudFormation}
 \end{figure}
 
+Najistotniejszym plikiem CloudFormation w projekcie jest ten inicjujący drobną instancję przeznaczoną do zarządzania docelowym \cw{Cluster}'em.
+Plik \cw{k8s-controller-instance.yaml} definiuje głównie: 
+
+\begin{itemize}
+    \item
+    \textbf{KopsInstance} - drobna instancja linuxa 
+    
+    \item
+    \textbf{SurfDNS} - subdomena oszczędzająca znajomości dokładnego adresu IP \emph{(np. w razie potrzeby ssh)}
+\end{itemize} 
+
+Funkjcą mającą kluczowe znaczenie jest możliwość definicji \emph{\textbf{UserData}} - skryptu \emph{bash} wykonywanego zaraz po starcie instancji. 
+Zdefiniowałem w nim polecenia:
+
+\begin{itemize}
+    \item
+    ściągnięciu dalszych instrukcji \emph{bash} z S3
+
+    \item
+    instalacji potrzebnych narzędzi \emph{(kops, kubectl, helm)}
+    
+    \item
+    zbudowania \cw{Cluster}'a poprzez \emph{kops} \emph{(\ref{iac:kops})}
+
+    \item
+    wdrożeniu pomocniczych \cw{Service}'ów poprzez \emph{kubectl} \& \emph{helm} \emph{(\ref{iac:kubectl})}
+\end{itemize} 
+
 \subsection{Kops}
+\label{iac:kops}
 
 \begin{figure}[!ht]
 	\begin{center}
-		\includegraphics[width=1\textwidth]{img/IAC-step2}
+		\includegraphics[width=0.95\textwidth]{img/IAC-step2}
 	\end{center}
 	\caption{Inicjacja Cluter'a SurfAdvisor - 2.Kops}
 \end{figure}
 
+\emph{kops} to open-source CLI do budowania \cw{Cluster}'ów Kubernetes na platformie AWS \cite{kops-k8s}.
+Stanowi alternatywę dla stosunkowo drogiego na start oficjalnego rozwiązania - EKS \cite{eks-pricing}.
+
+Przy użyciu tego narzędzia dalszy ciąg skryptów, uruchomionych w ramach \emph{UserData} \textbf{KopsInstance} \emph{(\ref{iac:cf})}, buduje \cw{Node}'y składające się na \cw{Cluster}.
+
+
 \subsection{Kubernetes}
+\label{iac:kubectl}
 
 \begin{figure}[!ht]
 	\begin{center}
@@ -110,7 +153,35 @@ Jako administrator możemy się dostać do subdomen takich jak:
 	\caption{Inicjacja Cluter'a SurfAdvisor - 3.Kubernetes}
 \end{figure}
 
+Gdy \emph{kops} skończy już stawiać \cw{Cluster} do akcji wkracza:
+
+\begin{itemize}
+    \item
+    \emph{\textbf{kubectl}} - oficjalne CLI do operacji na zasobach Kubernetes
+
+    \item
+    \emph{\textbf{helm}} - package manager dla Kubernetes
+\end{itemize} 
+
+Wdrażane są \cw{Service}'y zaspokajające wymagania bardziej niefunkcjonalne, m.in.:
+
+\begin{itemize}
+    \item
+    \emph{Jenkins} - który kontynuuje proces inicjacji systemu \emph{[\ref{iac:jenkins}]}
+
+    \item
+    \emph{Istio} - sekcja \emph{[\ref{traffic}]}
+
+    \item
+    \emph{Prometheus \& Grafana} - sekcja \emph{[\ref{monitoring}]}
+
+    \item
+    \emph{Cluster Autoscaler} - rozdział \emph{[\ref{cha:autoscaling}]}
+\end{itemize} 
+
+
 \subsection{Jenkins}
+\label{iac:jenkins}
 
 \begin{figure}[!ht]
 	\begin{center}
@@ -138,9 +209,11 @@ Jako administrator możemy się dostać do subdomen takich jak:
  
 
 \section{Zarządzanie ruchem}
+\label{traffic}
 (2-3s) o rutowaniu i security
 
 \section{Monitoring}
+\label{monitoring}
 (1-2s) obserwacja parametrów technicznych przy użyciu Prometheus \& Grafana
 
 
