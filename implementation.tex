@@ -96,7 +96,7 @@ Ostatni wdraża domenowe aplikacje, wymaga paru kliknięć w konsoli webowej \em
 	\begin{center}
 		\includegraphics[width=0.9\textwidth]{img/IAC-step1}
 	\end{center}
-	\caption{Inicjacja Cluter'a SurfAdvisor - 1.CloudFormation}
+	\caption{Inicjacja Cluter'a SurfAdvisor - 1. CloudFormation}
 \end{figure}
 
 Najistotniejszym plikiem CloudFormation w projekcie jest ten inicjujący drobną instancję przeznaczoną do zarządzania docelowym \cw{Cluster}'em.
@@ -110,12 +110,12 @@ Plik \cw{k8s-controller-instance.yaml} definiuje głównie:
     \textbf{SurfDNS} - subdomena oszczędzająca znajomości dokładnego adresu IP \emph{(np. w razie potrzeby ssh)}
 \end{itemize} 
 
-Funkjcą mającą kluczowe znaczenie jest możliwość definicji \emph{\textbf{UserData}} - skryptu \emph{bash} wykonywanego zaraz po starcie instancji. 
+Kluczowe znaczenie ma możliwość definicji \emph{\textbf{UserData}} - skryptu \emph{bash} wykonywanego zaraz po starcie instancji. 
 Zdefiniowałem w nim polecenia:
 
 \begin{itemize}
     \item
-    ściągnięciu dalszych instrukcji \emph{bash} z S3
+    ściągnięcia dalszych instrukcji \emph{bash} z S3
 
     \item
     instalacji potrzebnych narzędzi \emph{(kops, kubectl, helm)}
@@ -134,7 +134,7 @@ Zdefiniowałem w nim polecenia:
 	\begin{center}
 		\includegraphics[width=0.95\textwidth]{img/IAC-step2}
 	\end{center}
-	\caption{Inicjacja Cluter'a SurfAdvisor - 2.Kops}
+	\caption{Inicjacja Cluter'a SurfAdvisor - 2. Kops}
 \end{figure}
 
 \emph{kops} to open-source CLI do budowania \cw{Cluster}'ów Kubernetes na platformie AWS \cite{kops-k8s}.
@@ -150,7 +150,7 @@ Przy użyciu tego narzędzia dalszy ciąg skryptów, uruchomionych w ramach \emp
 	\begin{center}
 		\includegraphics[width=1\textwidth]{img/IAC-step3}
 	\end{center}
-	\caption{Inicjacja Cluter'a SurfAdvisor - 3.Kubernetes}
+	\caption{Inicjacja Cluter'a SurfAdvisor - 3. Kubernetes}
 \end{figure}
 
 Gdy \emph{kops} skończy już stawiać \cw{Cluster} do akcji wkracza:
@@ -183,6 +183,9 @@ Wdrażane są \cw{Service}'y zaspokajające wymagania bardziej niefunkcjonalne, 
 \subsection{Jenkins}
 \label{iac:jenkins}
 
+Jenkins jest gotowy do użycia po paru minutach \emph{(wraz ze wszystkimi plugin'ami zdefiniowanymi w pliku konfiguracyjnym)}.
+Jedynym manualnym krokiem jaki musimy wykonać jest stworzenie zadania \emph{"Github Organization"}, gdzie podajemy ID naszej organizacji.
+
 \begin{figure}[!ht]
 	\begin{center}
 		\includegraphics[width=0.8\textwidth]{img/jenkins-new-job}
@@ -190,12 +193,30 @@ Wdrażane są \cw{Service}'y zaspokajające wymagania bardziej niefunkcjonalne, 
 	\caption{Jenkins: wdrożenie domenowych serwisów - job "Github Organization"}
 \end{figure}
 
+Następnie Jenkins skanuje wszystkie repozytoria widniejące pod daną organizacją i wybiera te zawierące \textbf{\emph{Jenkinsfile}}.
+Po chwili będzie dostępna zakładka, na której wylistowane są wszystkie repozytoria spełniające wyżej wymienone kryterium:
+
 \begin{figure}[!ht]
 	\begin{center}
 		\includegraphics[width=1\textwidth]{img/jenkins-surf-folder}
 	\end{center}
 	\caption{Jenkins: wdrożenie domenowych serwisów - folder SurfAdvisor}
 \end{figure}
+
+Dla każdego z repozytorium Jenkins od razu uruchamia zdefiniowany w \emph{Jenkinsfile} pipeline.
+W moim przypadku repozytoria łączy jeszcze obecność dwóch innych plików:
+\\\\
+\begin{itemize}
+    \item
+    \emph{\textbf{Dockerfile}} - instrukcja budowy docker image wstawianego potem na DockerHub
+    \item
+    \emph{\textbf{deploy.yaml}} - deklaracja obiektów Kubernetes: \cw{Service}, \cw{Deployment}, \cw{Pod}, na których stanie dana aplikacja.
+    Wdrażane są poprzez \emph{kubectl}.
+\end{itemize} 
+
+Poniżej przedstawiony jest wycinek procesowania pipeline dla aplikacji \emph{geolocation-service}.
+Dwa końcowe kroki udekorowane są dodatkowo plikiem, na którym polegają.
+
 
 \begin{figure}[!ht]
 	\begin{center}
