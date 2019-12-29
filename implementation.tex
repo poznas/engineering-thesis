@@ -173,7 +173,7 @@ Wdrażane są \cw{Service}'y zaspokajające wymagania bardziej niefunkcjonalne, 
     \emph{Istio} - sekcja \emph{[\ref{traffic}]}
 
     \item
-    \emph{Prometheus \& Grafana} - sekcja \emph{[\ref{monitoring}]}
+    \emph{Prometheus \& Grafana} - monitoring parametrów technicznych \cw{Cluster}'a
 
     \item
     \emph{Cluster Autoscaler} - rozdział \emph{[\ref{cha:autoscaling}]}
@@ -215,8 +215,7 @@ W moim przypadku repozytoria łączy jeszcze obecność dwóch innych plików:
 \end{itemize} 
 
 Poniżej przedstawiony jest wycinek procesowania pipeline dla aplikacji \emph{geolocation-service}.
-Dwa końcowe kroki udekorowane są dodatkowo plikiem, na którym polegają.
-
+Dwa końcowe kroki udekorowane są dodatkowo symbolem pliku, na którym polegają.
 
 \begin{figure}[!ht]
 	\begin{center}
@@ -227,18 +226,49 @@ Dwa końcowe kroki udekorowane są dodatkowo plikiem, na którym polegają.
 
 
 
- 
 
-\section{Zarządzanie ruchem}
+\section{Zarządzanie ruchem i bezpieczeństwo}
 \label{traffic}
-(2-3s) o rutowaniu i security
 
-\section{Monitoring}
-\label{monitoring}
-(1-2s) obserwacja parametrów technicznych przy użyciu Prometheus \& Grafana
+\begin{figure}[!ht]
+    
+	\begin{center}
+		\includegraphics[width=0.93\textwidth]{img/security-flow}
+	\end{center}
+    \caption{Diagram autentykacji / autoryzacji}
+    \label{security-diagram}
+\end{figure}
+
+Poprzez ustawienie w Route53 ruch w stronę globalnie dostępnej domeny \emph{\textbf{thesurfadvisor.com}} jest kierowany na Load Balancer, 
+który następnie rozrzuca go po \cw{Node}'ach \cw{Cluster}'a.
+Na każdym z tych \cw{Node}'ów ruch trafia wpierw do instancji Istio \emph{Ingress Controller}. 
+Po pomyślniej autentykacji ruch jest kierowany do odpowiedniego \cw{Service}'u na podstawie ścieżki.
+\\\\
+Diagram \ref{security-diagram} ilustruje przebieg autentykacji i autoryzacji:
+\begin{enumerate}
+    \item
+    Proces logowania w aplikacji mobilnej pozostaje bez zmian. Tak jak w starej wersji użytkownik loguje się do Firebase którymś z dostępnych sposobów.
+
+    \item
+    Aplikacja mobilna dekoruje zapytania do \emph{thesurfadvisor.com} header'em z tym samym tokenem dostępu, który jest używany do komunikacji z usługami Firebase.
+
+    \item
+    Istio \emph{Ingress Controller} deleguje weryfikację nadchodzącego tokena do \cw{Service}'u \textbf{\emph{firebase-auth-connector}}.
+
+    \item
+    \emph{firebase-auth-connector} poprzez oficjalne SDK zleca Firebase weryfikację tokena.
+    W przypadku sukcesu Firebase zwraca mały zbiór podstawowych danych użytkownika.
+    Nasz \cw{Service} zwraca do Istio tylko jego identyfikator, w planach jest dołożenie jeszcze zbioru uprawnień. 
+
+    \item
+    Istio usuwa niepotrzebny już header ''Authorization'' i ustawia ''x-user-id'' z identyfikatorem użytkownika.
+    W ten sposób dalsze domenowe serwisy są odciążone od implementowania tego aspektu bezpieczeństwa.
+\end{enumerate} 
+
 
 
 \section{Realizacja wymagań funkcjonalnych}
 (5-10s) Geohash \& Clustering + gdzie i jak to implementuję 
 - pochylenie się nad serwisami: geolocation-service, spot-service, map-supplier. 
 Prezentacja aplikacji mobilnej
+
