@@ -224,8 +224,16 @@ Dwa końcowe kroki udekorowane są dodatkowo symbolem pliku, na którym polegaj�
 	\caption{Jenkins: wdrożenie domenowych serwisów - pipeline}
 \end{figure}
 
+\subsection{Usuwanie}
 
+Cały powstały w sposób opisany wyżej \cw{Cluster} wraz ze wszystkimi powiązanymi produktami AWS (\emph{EC2, LoadBalancer, etc.}) usuwa się jedną komendą:
 
+\begin{itemize}
+    \item
+    \textcolor{blue}{\texttt{kops delete cluster --name \$\{NAME\} --yes}}
+\end{itemize} 
+
+Bardzo przydatne na etapie developmentu - usuwamy system kończąc pracę w danym dniu, co przynosi spore oszczędności.
 
 \section{Zarządzanie ruchem i bezpieczeństwo}
 \label{traffic}
@@ -243,7 +251,7 @@ Poprzez ustawienie w Route53 ruch w stronę globalnie dostępnej domeny \emph{\t
 który następnie rozrzuca go po \cw{Node}'ach \cw{Cluster}'a.
 Na każdym z tych \cw{Node}'ów ruch trafia wpierw do instancji Istio \emph{Ingress Controller}. 
 Po pomyślniej autentykacji ruch jest kierowany do odpowiedniego \cw{Service}'u na podstawie ścieżki.
-\\\\
+\\\\\\\\
 Diagram \ref{security-diagram} ilustruje przebieg autentykacji i autoryzacji:
 \begin{enumerate}
     \item
