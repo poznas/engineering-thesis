@@ -1,0 +1,182 @@
+@startuml
+hide empty members
+set namespaceSeparator none
+
+ enum BasicWindDirection {
+		 - N  
+		 - NE  
+		 - E  
+		 - SE  
+		 - S  
+		 - SW  
+		 - W  
+		 - NW  
+}
+
+ enum ChopSize {
+		 - N  
+		 - S  
+		 - M  
+		 - H  
+}
+
+ enum CountryCode {
+		 - PL  
+		 - EN  
+		 - ...  		 
+}
+
+ enum Depth {
+		 - SHALLOW  
+		 - DEEP  
+}
+
+class  Description {
+		 - content <b>:String</b> 
+		 - language <b>:CountryCode[]</b> 
+}
+
+ enum Difficulty {
+		 - EASY  
+		 - MEDIUM  
+		 - HARD  
+		 - PROS_ONLY  
+}
+
+class  MapSupplierResponse {
+		 - matchedRectangle <b>:Rectangle[]</b> 
+		 - pointIds <b>:PointId[]</b> 
+		 - points <b>:PointDetails[]</b> 
+}
+
+ enum ObjectStatus {
+		 - AVAILABLE  
+		 - DRAFT  
+		 - DECLINED  
+}
+
+ enum ObjectType {
+		 - SPOT  
+}
+
+class  PointCoords {
+		 - latitude <b>:Double</b> 
+		 - longitude <b>:Double</b> 
+}
+
+class  PointDetails {
+		 - cluster <b>:Boolean</b> 
+		 - coords <b>:PointCoords[]</b> 
+		 - distance <b>:Integer</b> 
+		 - pointIds <b>:PointId[]</b> 
+		 - spot <b>:Spot[]</b> 
+}
+
+class  PointId {
+		 - objectId <b>:String</b> 
+		 - objectType <b>:ObjectType[]</b> 
+}
+
+ enum Popularity {
+		 - S  
+		 - M  
+		 - H  
+}
+
+class  Rectangle {
+		 - pointA <b>:PointCoords[]</b> 
+		 - pointB <b>:PointCoords[]</b> 
+}
+
+ enum SportType {
+		 - WINDSURFING  
+		 - KITESURFING  
+		 - SURFING  
+}
+
+class  Spot {
+		 - bestWindDirections <b>:BasicWindDirection[]</b> 
+		 - chopSize <b>:ChopSize[]</b> 
+		 - city <b>:String</b> 
+		 - country <b>:CountryCode[]</b> 
+		 - dangers <b>:String</b> 
+		 - depth <b>:Depth[]</b> 
+		 - descriptions <b>:Description[]</b> 
+		 - difficulty <b>:Difficulty[]</b> 
+		 - facilities <b>:SpotFacility[]</b> 
+		 - id <b>:String</b> 
+		 - liveCamera <b>:String[]</b> 
+		 - name <b>:String</b> 
+		 - photoUrls <b>:String[]</b> 
+		 - popularity <b>:Popularity[]</b> 
+		 - sportTypes <b>:SportType[]</b> 
+		 - state <b>:String</b> 
+		 - status <b>:ObjectStatus[]</b> 
+		 - waterCurrent <b>:WaterCurrent[]</b> 
+		 - waterType <b>:WaterType[]</b> 
+		 - waveAvgPeriod <b>:Integer</b> 
+		 - waveAvgSize <b>:Integer</b> 
+		 - waveMaxSize <b>:Integer</b> 
+		 - waveQuality <b>:Integer</b> 
+		 - worstWindDirections <b>:BasicWindDirection[]</b> 
+}
+
+ enum SpotFacility {
+		 - SCHOOLS  
+}
+
+ enum WaterCurrent {
+		 - N  
+		 - S  
+		 - M  
+		 - H  
+}
+
+ enum WaterType {
+		 - FLAT  
+		 - WAVE  
+}
+
+class  point {
+}
+
+
+interface MapSupplierApi {
+	 + <i>queryCircle()</i><b>:MapSupplierResponse</b> 
+}
+
+interface MapSupplierApi {
+	 + <i>queryRectangle()</i><b>:MapSupplierResponse</b> 
+}
+
+
+Description  *-- "0..*"  CountryCode 
+MapSupplierResponse  *-- "0..*"  Rectangle 
+MapSupplierResponse  *-- "0..*"  PointId 
+MapSupplierResponse  *-- "0..*"  PointDetails 
+PointDetails  *-- "0..*"  PointCoords 
+PointDetails  *-- "0..*"  PointId 
+PointDetails  *-- "0..*"  Spot 
+PointId  *-- "0..*"  ObjectType 
+Rectangle  *-- "0..*"  PointCoords 
+Spot  *-- "0..*"  BasicWindDirection 
+Spot  *-- "0..*"  ChopSize 
+Spot  *-- "0..*"  CountryCode 
+Spot  *-- "0..*"  Depth 
+Spot  *-- "0..*"  Description 
+Spot  *-- "0..*"  Difficulty 
+Spot  *-- "0..*"  SpotFacility 
+Spot  *-- "0..*"  Popularity 
+Spot  *-- "0..*"  SportType 
+Spot  *-- "0..*"  ObjectStatus 
+Spot  *-- "0..*"  WaterCurrent 
+Spot  *-- "0..*"  WaterType 
+MapSupplierApi -->    MapSupplierResponse 
+
+note as N1
+  Name: <b><color:royalBlue>MapSupplier</color>
+  Version: <b><color:royalBlue>0.0.2</color>
+end note
+
+
+@enduml
