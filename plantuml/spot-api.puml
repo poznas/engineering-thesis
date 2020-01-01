@@ -1,6 +1,12 @@
 @startuml
+left to right direction
 hide empty members
 set namespaceSeparator none
+
+note as N1
+  Name: <b><color:royalBlue>spot-service</color>
+  Version: <b><color:royalBlue>0.0.2</color>
+end note
 
 class  Spot {
 		 - id <b>:String</b> 
@@ -11,22 +17,22 @@ class  Spot {
 		 - descriptions <b>:Description[]</b> 
 		 - photoUrls <b>:String[]</b> 
 		 - liveCamera <b>:String[]</b> 
-		 - status <b>:SpotStatus[]</b> 
+		 - status <b>:SpotStatus</b> 
 		 - sportTypes <b>:SportType[]</b> 
-		 - waterType <b>:WaterType[]</b> 
-		 - popularity <b>:Popularity[]</b> 
+		 - waterType <b>:WaterType</b> 
+		 - popularity <b>:Popularity</b> 
 		 - facilities <b>:SpotFacility[]</b> 
-		 - difficulty <b>:Difficulty[]</b> 
-		 - depth <b>:Depth[]</b> 
+		 - difficulty <b>:Difficulty</b> 
+		 - depth <b>:Depth</b> 
 		 - dangers <b>:String</b> 
 		 - bestWindDirections <b>:BasicWindDirection[]</b> 
 		 - worstWindDirections <b>:BasicWindDirection[]</b> 
-		 - chopSize <b>:ChopSize[]</b> 
+		 - chopSize <b>:ChopSize</b> 
 		 - waveQuality <b>:Integer</b> 
 		 - waveAvgPeriod <b>:Integer</b> 
 		 - waveAvgSize <b>:Integer</b> 
 		 - waveMaxSize <b>:Integer</b> 
-		 - waterCurrent <b>:WaterCurrent[]</b> 
+		 - waterCurrent <b>:WaterCurrent</b> 
 }
 
 class  SpotFilters {
@@ -41,12 +47,12 @@ class  SpotFilters {
 		 - depth <b>:Depth[]</b> 
 		 - sportTypes <b>:SportType[]</b> 
 		 - waterType <b>:WaterType[]</b> 
-		 - waveAvgPeriod <b>:IntegerRange[]</b> 
-		 - waveAvgSize <b>:IntegerRange[]</b> 
+		 - waveAvgPeriod <b>:IntegerRange</b> 
+		 - waveAvgSize <b>:IntegerRange</b> 
 }
 
 class  Description {
-		 - language <b>:CountryCode[]</b> 
+		 - language <b>:CountryCode</b> 
 		 - content <b>:String</b> 
 }
 
@@ -161,39 +167,15 @@ interface SpotApi {
 	 + <i>filterSpotIds(SpotFilters filters)</i><b>:SpotIdListResponse</b> 
 }
 
+Spot  *--   Description 
 
-Spot  *-- "1..*"  CountryCode 
-Spot  *-- "0..*"  Description 
-Spot  *-- "0..*"  SpotStatus 
-Spot  *-- "0..*"  SportType 
-Spot  *-- "0..*"  WaterType 
-Spot  *-- "0..*"  Popularity 
-Spot  *-- "0..*"  SpotFacility 
-Spot  *-- "0..*"  Difficulty 
-Spot  *-- "0..*"  Depth 
-Spot  *-- "0..*"  BasicWindDirection 
-Spot  *-- "0..*"  ChopSize 
-Spot  *-- "0..*"  WaterCurrent 
-SpotFilters  *-- "0..*"  SpotStatus 
-SpotFilters  *-- "0..*"  CountryCode 
-SpotFilters  *-- "0..*"  SpotFacility 
-SpotFilters  *-- "0..*"  Difficulty 
-SpotFilters  *-- "0..*"  Depth 
-SpotFilters  *-- "0..*"  SportType 
-SpotFilters  *-- "0..*"  WaterType 
-SpotFilters  *-- "0..*"  IntegerRange 
-Description  *-- "0..*"  CountryCode 
-PagedSpotResponse  *-- "0..*"  Spot 
+SpotFilters  *--  IntegerRange 
+PagedSpotResponse  *--   Spot 
 SpotApi -->    PagedSpotResponse 
 SpotApi -->    SpotFilters 
 SpotApi -->    SpotIdResponse 
 SpotApi -->    Spot 
 SpotApi -->    SpotIdListResponse 
-
-note as N1
-  Name: <b><color:royalBlue>spots</color>
-  Version: <b><color:royalBlue>0.0.2</color>
-end note
 
 
 @enduml
