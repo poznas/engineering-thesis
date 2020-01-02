@@ -49,7 +49,8 @@ Jako administrator możemy się dostać do subdomen takich jak:
 	\begin{center}
 		\includegraphics[width=1\textwidth]{img/surf-services}
 	\end{center}
-	\caption{Zbliżenie na domenowe serwisy SurfAdvisor}
+    \caption{Zbliżenie na domenowe serwisy SurfAdvisor}
+    \label{domain-services}
 \end{figure}
 
 \begin{itemize}
@@ -294,5 +295,31 @@ Diagram \ref{security-diagram} ilustruje przebieg autentykacji i autoryzacji:
 	\end{center}
     \caption{Diagram klas \emph{map-supplier} API}
 \end{figure}
+
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.1\textwidth]{out/plantuml/map-query-flow/map-query-flow-empty.pdf}
+	\end{center}
+\end{figure}
+
+\subsection{Zasilanie mapy spotów}
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[width=0.92\textwidth]{out/plantuml/map-query-flow/map-query-flow.pdf}
+	\end{center}
+\end{figure}
+
+Większość funkcjonalności zaimplementowanych w ramach tego projektu bierze udział podczas zasilania mapy spotów.
+Topologia domenowych \cw{Service}'ów pokazana jest na diagramie \ref{domain-services}. 
+Poprzez analizę przebiegu zapytania o punkty na mapie poznamy głębiej poszczególne \cw{Service}'y.
+
+\begin{enumerate}
+    \item
+    \emph{[map-supplier]} - \textbf{GET /rectangle} (query)\\
+
+\end{enumerate}
+
 
 

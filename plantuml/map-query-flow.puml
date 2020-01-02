@@ -1,0 +1,92 @@
+@startuml
+
+collections "**map-supplier**\nservice" as supplier #Tomato
+collections "**spot**\nservice" as spot #LightSkyBlue
+collections "**geolocation**\nservice" as geo #LightGreen
+database "**SPOT**\n//DynamoDB//" as SPOT #LightSkyBlue
+database "**GEOLOCATION**\n//DynamoDB//" as GEOLOCATION #LightGreen
+
+[-> supplier : **GET /rectangle** (query)
+activate supplier
+
+supplier -> supplier : ** dyskretyzacja** obszaru
+
+supplier -> supplier : sprawdzenie **cache** obszarów
+
+alt brak obszaru w cache
+
+supplier -> geo : **GET /geolocations** (rectangle)
+activate geo
+
+geo -> GEOLOCATION : selectByGeohash
+activate GEOLOCATION
+geo <-- GEOLOCATION : ://Set<Geolocation>//
+deactivate GEOLOCATION
+geo -> geo : ** klasteryzacja **
+
+supplier <-- geo : //:Set<GeoCluster>//
+deactivate geo 
+
+end
+
+supplier -> supplier : sprawdzenie **cache** wyników filtrowania
+
+alt brak wyniku w cache
+
+supplier -> spot : **GET /spots/filter-ids** (spotFilters)
+activate spot
+
+spot -> SPOT : selectIdsByFilters
+activate SPOT
+spot <-- SPOT : //:Set<UUID>//
+deactivate SPOT
+supplier <-- spot : //:Set<UUID>//
+deactivate spot
+
+end
+
+supplier -> supplier : usuniecie punktów nie zawierajacych sie\nw zwróconym zbiorze
+
+loop dla kazdego poczatkowego klastra, który po filtracji zawiera tylko jeden punkt 
+
+supplier -> supplier : sprawdzenie **cache** geolokacji
+
+alt brak geolokacji w cache
+supplier -> geo : **GET /geolocations**/{uid}
+activate geo
+
+geo -> GEOLOCATION : selectByKey
+activate GEOLOCATION  
+geo <-- GEOLOCATION : //:Geolocation//
+deactivate GEOLOCATION
+supplier <-- geo : //:Geolocation//
+deactivate geo
+end
+
+end
+
+loop dla kazdego obiektu który jest pojedynczym punktem (nie klastrem)
+
+supplier -> supplier : sprawdzenie **cache** spotów
+
+alt brak spotu w cache
+
+supplier -> spot : **GET /spots/**{uid}
+activate spot
+
+spot -> SPOT : selectByKey
+activate SPOT
+spot <-- SPOT  : //:Spot//
+deactivate SPOT
+supplier <-- spot  : //:Spot//
+deactivate spot
+
+end
+
+end
+
+[<-- supplier : :MapSupplierResponse
+deactivate supplier
+
+
+@enduml
