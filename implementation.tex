@@ -284,7 +284,8 @@ Diagram \ref{security-diagram} ilustruje przebieg autentykacji i autoryzacji:
 	\begin{center}
 		\includegraphics[width=1\textwidth]{out/plantuml/spot-api/spot-api.pdf}
 	\end{center}
-    \caption{Diagram klas  API}
+    \caption{Diagram klas \emph{spot-service} API}
+    \label{spot-api}
 \end{figure}
 
 \subsection{Diagram klas \emph{map-supplier} API}
@@ -294,6 +295,7 @@ Diagram \ref{security-diagram} ilustruje przebieg autentykacji i autoryzacji:
 		\includegraphics[width=1\textwidth]{out/plantuml/map-supplier-api/map-supplier-api.pdf}
 	\end{center}
     \caption{Diagram klas \emph{map-supplier} API}
+    \label{ms-api}
 \end{figure}
 
 
@@ -317,7 +319,88 @@ Poprzez analizę przebiegu zapytania o punkty na mapie poznamy głębiej poszcze
 
 \begin{enumerate}
     \item
-    \emph{[map-supplier]} - \textbf{GET /rectangle} (query)\\
+    \Large{\emph{[map-supplier]} - \textbf{GET /rectangle} (query)}\normalsize\\
+    nadchodzące od aplikacji mobilnej zapytanie jest typu \cw{RectangleMapQuery} (\ref{ms-api}), zawiera:
+    \begin{itemize}
+        \item
+        \textbf{\emph{rectangle}} - w zamyśle obszar widoczny na mapie
+
+        \item
+        \textbf{\emph{objectTypes}} - żądane typy obiektów, aktualnie są to tylko spoty, ale w przyszłości typów może być więcej
+
+        \item
+        \textbf{\textcolor{blue}{\emph{spotFilters}}} - filtry dla obiektów typu spot, w przyszłości w zapytaniu mogły by się pojawić filtry dla pozostałych typów
+
+        \item
+        \textbf{\emph{referenceLocation}} - punkt na mapie \emph{(w zamyśle położenie użytkownika)}, wobec którego liczone są odległości zwracanych punktów
+    \end{itemize} 
+
+
+    \item
+    \Large\emph{[map-supplier]} - \textbf{dyskretyzacja obszaru}\normalsize\\
+    Wartości szerokości i długości geograficznej jakie mogą nadejść od klienta są praktycznie liniowe.
+    Szansa na powtórzenie się obszaru jest bardzo niska. Stąd pojawiła się potrzeba przybliżenia tych wymiarów do najbliższych zdefiniowanych dyskretnych wartości.
+    W ten sposób szansa potwórki jest znacznie większa. Oznacza to, że aplikacja częściej będzie mogła skorzystać z \textbf{cache}'a.
+    Poniższy wykres przedstawia użytą funkcję dyskretyzacji, która zmiejsza swój stopień wraz z przybliżeniem na mapie.
+
+    \begin{figure}[H]
+        \begin{center}
+            \includegraphics[width=0.5\textwidth]{img/lat-long-discretization}
+        \end{center}
+        \caption{Funkcja dyskretyzacji kąta}
+    \end{figure}
+
+    \item
+    \Large\emph{[geolocation-service]} - \textbf{selectByGeohash}\normalsize\\
+    \emph{Geohash} w dużym skrócie jest funkcją dyskretyzacji powierzchni globu.
+    Zamienia długość i szerokość geograficzną na identyfikator wycinka Ziemi, w którym się znajduje.
+    W ten sposób poindeksowane są obiekty w tabeli \cw{GEOLOCATION}. Znacznie przyspiesza to zapytania punkty w zadanym obszarze.
+
+    \item
+    \Large\emph{[geolocation-service]} - \textbf{klasteryzacja}\normalsize\\
+    Wykonywana jest po stronie backendu, aby nie obarczać tym zadaniem aplikacji mobilnej. 
+    W zależności od stopnia przybliżenia wykorzystywany jest jeden z trzech algorytmów:
+
+    \begin{itemize}
+        \item
+        \textbf{\emph{Geohash}} - klasteryzacja na podstawie \emph{Geohash}'u
+
+        \item
+        \textbf{\emph{DBSCAN}} - algorytm opierający się na gęstości punktów
+
+        \item
+        \textbf{\emph{k-means}} - kieruje się średnią odległością dzielącą punkty
+
+    \end{itemize} 
+    
+
+    \item
+    \Large{\emph{[spot-service]} - \textbf{GET /spots/filter-ids} (spotFilters)}\normalsize\\
+    \emph{Geolocation-service} zwraca sklasteryzowane identyfikatory obiektów w zadanym obszarze.
+    Teraz pora na filtrowanie tego zbioru po zadanych w zapytaniu parametrach.
+    To zadanie należy do \emph{spot-service}. Zwraca on zbiór identyfikatorów spełniających kryteria.
+
+    \item
+    \Large{\emph{[geolocation-service]} - \textbf{GET /geolocations}/\{uid\}}\normalsize\\
+    W przypadku gdy grupa identyfikatorów stanowiąca klaster zostanie zredukowana po filtrowaniu do pojedynczego punktu, wypada skorygować jego koordynaty.
+    Wołany jest wtedy \emph{geolocation-service} by pozyskać dokładny punkt.
+
+    \item
+    \Large{\emph{[spot-service]} - \textbf{GET /spots}/\{uid\}}\normalsize\\
+    Każdy pojedynczy punkt dekorowany jest skojarzonymi danymi spotu, klastry są pomijane.
+
+    \item
+    \Large\emph{[map-supplier]} - \textbf{MapSupplierResponse}\normalsize
+    \begin{itemize}
+        \item
+        \textbf{\emph{matchedRectangle}} - użyty obszar po dyskretyzacji
+
+        \item
+        \textbf{\emph{points}} - wynikowe obiekty - klastry lub pojedyncze spoty
+
+    \end{itemize} 
+    
+
 
 \end{enumerate}
 
