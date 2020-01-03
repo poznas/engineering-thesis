@@ -406,13 +406,28 @@ Poprzez analizę przebiegu zapytania o punkty na mapie poznamy głębiej poszcze
 
 \subsection{Aplikacja mobilna}
 
+Napisana z wykorzystaniem \emph{React Native} - translacja kodu pisanego w \emph{Javascript} na natywne elementy UI platform \emph{Android} i \emph{iOS}.
+W projekcie aplikacji zajmowałem się jedynie spinaniem jej z zewnętrznymi serwisami:
+
+\begin{itemize}
+    \item
+    \emph{Google} - logowanie
+
+    \item
+    \emph{Firebase} - autentykacja z użyciem tokenu od \emph{Google}
+
+    \item
+    \emph{thesurfadvisor.com} - nowe usługi postawione na AWS \emph{(\ref{domain-services})}
+
+\end{itemize} 
+
 \begin{figure}[h!]
 	\begin{center}
 		\includegraphics[width=0.45\textwidth]{img/mobile/login}
 		\hspace{5mm}
 		\includegraphics[width=0.45\textwidth]{img/mobile/google}
 	\end{center}
-	\caption{...}
+	\caption{Ekran logowania wraz z przekierowaniem do Google}
 \end{figure}
 
 \begin{figure}[h!]
@@ -421,14 +436,14 @@ Poprzez analizę przebiegu zapytania o punkty na mapie poznamy głębiej poszcze
 		\hspace{5mm}
 		\includegraphics[width=0.45\textwidth]{img/mobile/filters-1}
 	\end{center}
-	\caption{...}
+	\caption{Mapa spotów wraz z zakładką filtrów}
 \end{figure}
 
 \begin{figure}[h!]
     \begin{center}
         \includegraphics[width=1\textwidth]{img/mobile/clustering}
     \end{center}
-    \caption{...}
+    \caption{Prezentacja klasteryzacji spotów na mapie}
 \end{figure}
 
 
