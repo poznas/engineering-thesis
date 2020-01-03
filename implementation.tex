@@ -319,7 +319,7 @@ Poprzez analizę przebiegu zapytania o punkty na mapie poznamy głębiej poszcze
 
 \begin{enumerate}
     \item
-    \Large{\emph{[map-supplier]} - \textbf{GET /rectangle} (query)}\normalsize\\
+    \large{\emph{[map-supplier]} - \textbf{GET /rectangle} (query)}\normalsize\\
     nadchodzące od aplikacji mobilnej zapytanie jest typu \cw{RectangleMapQuery} (\ref{ms-api}), zawiera:
     \begin{itemize}
         \item
@@ -337,7 +337,7 @@ Poprzez analizę przebiegu zapytania o punkty na mapie poznamy głębiej poszcze
 
 
     \item
-    \Large\emph{[map-supplier]} - \textbf{dyskretyzacja obszaru}\normalsize\\
+    \large\emph{[map-supplier]} - \textbf{dyskretyzacja obszaru}\normalsize\\
     Wartości szerokości i długości geograficznej jakie mogą nadejść od klienta są praktycznie liniowe.
     Szansa na powtórzenie się obszaru jest bardzo niska. Stąd pojawiła się potrzeba przybliżenia tych wymiarów do najbliższych zdefiniowanych dyskretnych wartości.
     W ten sposób szansa potwórki jest znacznie większa. Oznacza to, że aplikacja częściej będzie mogła skorzystać z \textbf{cache}'a.
@@ -351,13 +351,13 @@ Poprzez analizę przebiegu zapytania o punkty na mapie poznamy głębiej poszcze
     \end{figure}
 
     \item
-    \Large\emph{[geolocation-service]} - \textbf{selectByGeohash}\normalsize\\
+    \large\emph{[geolocation-service]} - \textbf{selectByGeohash}\normalsize\\
     \emph{Geohash} w dużym skrócie jest funkcją dyskretyzacji powierzchni globu.
     Zamienia długość i szerokość geograficzną na identyfikator wycinka Ziemi, w którym się znajduje.
     W ten sposób poindeksowane są obiekty w tabeli \cw{GEOLOCATION}. Znacznie przyspiesza to zapytania punkty w zadanym obszarze.
 
     \item
-    \Large\emph{[geolocation-service]} - \textbf{klasteryzacja}\normalsize\\
+    \large\emph{[geolocation-service]} - \textbf{klasteryzacja}\normalsize\\
     Wykonywana jest po stronie backendu, aby nie obarczać tym zadaniem aplikacji mobilnej. 
     W zależności od stopnia przybliżenia wykorzystywany jest jeden z trzech algorytmów:
 
@@ -375,22 +375,22 @@ Poprzez analizę przebiegu zapytania o punkty na mapie poznamy głębiej poszcze
     
 
     \item
-    \Large{\emph{[spot-service]} - \textbf{GET /spots/filter-ids} (spotFilters)}\normalsize\\
+    \large{\emph{[spot-service]} - \textbf{GET /spots/filter-ids} (spotFilters)}\normalsize\\
     \emph{Geolocation-service} zwraca sklasteryzowane identyfikatory obiektów w zadanym obszarze.
     Teraz pora na filtrowanie tego zbioru po zadanych w zapytaniu parametrach.
     To zadanie należy do \emph{spot-service}. Zwraca on zbiór identyfikatorów spełniających kryteria.
 
     \item
-    \Large{\emph{[geolocation-service]} - \textbf{GET /geolocations}/\{uid\}}\normalsize\\
+    \large{\emph{[geolocation-service]} - \textbf{GET /geolocations}/\{uid\}}\normalsize\\
     W przypadku gdy grupa identyfikatorów stanowiąca klaster zostanie zredukowana po filtrowaniu do pojedynczego punktu, wypada skorygować jego koordynaty.
     Wołany jest wtedy \emph{geolocation-service} by pozyskać dokładny punkt.
 
     \item
-    \Large{\emph{[spot-service]} - \textbf{GET /spots}/\{uid\}}\normalsize\\
+    \large{\emph{[spot-service]} - \textbf{GET /spots}/\{uid\}}\normalsize\\
     Każdy pojedynczy punkt dekorowany jest skojarzonymi danymi spotu, klastry są pomijane.
 
     \item
-    \Large\emph{[map-supplier]} - \textbf{MapSupplierResponse}\normalsize
+    \large\emph{[map-supplier]} - \textbf{MapSupplierResponse}\normalsize
     \begin{itemize}
         \item
         \textbf{\emph{matchedRectangle}} - użyty obszar po dyskretyzacji
@@ -400,9 +400,36 @@ Poprzez analizę przebiegu zapytania o punkty na mapie poznamy głębiej poszcze
 
     \end{itemize} 
     
-
-
 \end{enumerate}
+
+\pagebreak
+
+\subsection{Aplikacja mobilna}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=0.45\textwidth]{img/mobile/login}
+		\hspace{5mm}
+		\includegraphics[width=0.45\textwidth]{img/mobile/google}
+	\end{center}
+	\caption{...}
+\end{figure}
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[width=0.45\textwidth]{img/mobile/map}
+		\hspace{5mm}
+		\includegraphics[width=0.45\textwidth]{img/mobile/filters-1}
+	\end{center}
+	\caption{...}
+\end{figure}
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=1\textwidth]{img/mobile/clustering}
+    \end{center}
+    \caption{...}
+\end{figure}
 
 
 
