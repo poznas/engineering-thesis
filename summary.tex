@@ -1,6 +1,35 @@
 \chapter{Podsumowanie}
 \label{cha:summary}
 
-1 strona\\
-kubernetes spoko na wieksze projekty z wiekszym teamem z niezerowym budzetem\\
-male apki latwiej i taniej serverless
+W ramach niniejszej pracy inżynierskiej zbudowany został system, na którym postawiono nowe usługi pod przyszłą wersję aplikacji SurfAdvisor.
+Planowo skorzystają z niej użytkownicy latem 2020 roku zarówno na platformie \emph{Android} jak i \emph{iOS}. 
+Podczas korzystania z mapy spotów może zostać określona szeroka gama filtrów. 
+Nowy \cw{Cluster} spełnia dodatkowo zadane wymaganie niefunckjonalne będąc gotowym na wzmożony ruch.
+Autentykacja i autoryzacja nowych usług jest połączona z pierwotnym serwerem \emph{Firebase} pomimo faktu różnych dostawców chmur \emph{(AWS i GCP)}.
+Cała infrastruktura jest wygodna w utrzymaniu dzięki wykorzystaniu narzędzi wspierających \emph{IaC}.
+Rolę programisty w tym projekcie dodatkowo ułatwia wdrożenie serwisów takich jak \emph{Jenkins} czy \emph{Grafana}.\\
+
+
+Połączenie produktów \emph{Amazon Web Services} i orkiestracji \emph{Kubernetes} tworzy łatwe w utrzymaniu i elastyczne w wymiarach środowisko.
+Synteza jest jeszcze prostsza, gdy zamiast tworzenia \cw{Cluster}'a na własną rękę poprzez \emph{kops} CLI, zdecydujemy się na oficjalne rozwiązanie jakim jest \emph{AWS EKS}.
+Należy mieć jednak świadomość, że uruchomione całodobowo maszyny wirtualne tworzące nasz system nie są darmowe.
+Minimalny sensowny zestaw instancji \emph{EC2} wraz z \emph{LoadBalancer}'em kosztować będzie w przybliżeniu ponad 140 dolarów miesięcznie.
+Cenę tę można zredukować zobowiązując się do korzystania z instancji przez dłuższy okres \emph{(1-3 lata)}, ale nie więcej niż 50\%.\\
+
+
+Dla mniejszych projektów znacznie lepiej sprawdzą się platformy \emph{serverless}.
+Główna różnica polega na tym, że aplikacja uruchomiona jest tylko wtedy, gdy nadchodzi żądanie od klienta i tylko ten czas jest opłacany.
+Aplikacje te są z reguły lekkie tak by mogły szybko wstać i obsłużyć zapytanie.
+Najczęściej przybierają formę funkcji \emph{Javascript} \emph{(AWS Lambda, Google Cloud Function)}.
+W oparciu o nie można zbudować sieć jednostek łudząco podobną do mikroserwisów.
+
+
+Inną formą \emph{serverless} jest korzystanie z \emph{Firebase (Google)} lub \emph{AWS Amplify}.
+Oba narzędzia zapewniają m.in. podstawowe usługi baz danych, autentykacji i powiadomień.
+To co wykracza poza ich możliwości można zaimplementować za pomocą wcześniej opisanych funkcji.
+
+
+
+
+
+
