@@ -52,3 +52,38 @@ Nowe rozszerzenie ma udostępniać:
 \end{itemize} 
 
 
+\section{Wymagania niefunkcjonalne}
+
+\begin{itemize}
+    \item
+    \textbf{Wykorzystanie chmury}\\
+    \emph{SurfAdvisor} nie posiada własnej serwerowni, dlatego nowy system powstanie na chmurze.
+    Padło na AWS z uwagi na wcześniejsze doświadczenie z tą platformą autora niniejszej pracy.
+
+    \item
+    \textbf{Autoskalowanie}\\
+    Usługi \emph{thesurfadvisor.com} muszą się automatycznie skalować by sprostać zwiększeniom w ruchu.
+
+    \item
+    \textbf{Dostępność}\\
+    Przy aplikacjach przeznaczoncych dla użytkowników indywidualnych nie można sobie pozwolić na przerwy w dostępności usług.
+    Sczególnie w przypadku surfer'ów, którzy są aktywni również nocą często imprezując do rana.
+    Aktualizacje oprogramowania serwisów muszą być przeprowadzane techniką \emph{rolling update}, która nie pozwala na choćby sekundę niedostepności.
+
+    \item
+    \textbf{Łatwe utrzymanie i rozwój}\\
+    Programiści często zmieniają projekty lub pracę. Sytuacja, w której nowi pracownicy musieliby zgadywać jak dane środowisko powstało jest niedopuszczalna.
+    Tutaj z pomocą przychodzi \emph{IaC} o czym więcej w sekcji \ref{iac:section}.
+
+    \item
+    \textbf{Integralność aspektu bezpieczeństwa}\\
+    Autentykacja i autoryzacja będzie delegowana do istniejącego serwisu \emph{Firebase}. 
+    W ten sposób w całym systemie będą używane te same identyfikatory użytkowników popimo istnienia usług platformach dwóch różnych dostawców chmur.
+
+    \item
+    \textbf{Monitorowanie}\\
+    Parametry techniczne serwisów będą zbierane i wyświetlane w wygodnym GUI by pomóc zidentyfikować potencjalne problemy.
+
+\end{itemize} 
+
+

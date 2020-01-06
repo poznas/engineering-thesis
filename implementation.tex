@@ -79,12 +79,13 @@ Jako administrator możemy się dostać do subdomen takich jak:
 
 
 \section{IaC - Infrastructure as Code}
+\label{iac:section}
 
 Jest to podejście do zarządzania infrastrukturą \emph{(siecią, wirtualnymi maszynami, kontenerami etc.)} poprzez pliki tekstowe, 
 których treść w sposób jednoznaczny definiuje potrzebne zasoby. 
 Taką deklaratywną formę konfiguracji bardzo łatwo można śledzić poprzez ten system kontroli wersji co ten używany wokół kodu aplikacji.
 IaC jest odpowiedzią na problem różnic pomiędzy środowiskami narastającymi jeszcze bardziej z czasem, jakie powodowały ich manualne imperatywne modyfikacje.
-Założeniem IaC jest \textbf{idempotentność} wdrożeń definicji z plików - za każdym razem rezultatem ma być takie samo środowisko \cite{iac-ms}.
+Założeniem IaC jest \textbf{idempotentność} wdrożeń definicji z plików - za każdym razem rezultatem ma być takie samo środowisko ~\cite{iac-ms}.
 
 W projekcie realizuje tę koncepcję stawiając cały system w czterech krokach. 
 Pierwsze trzy stawiają \cw{Cluster} na AWS, są w pełni zautomatyzowane: \emph{CloudFormation}, \emph{Kops} i \emph{Kubernetes}.
@@ -138,8 +139,8 @@ W ramach projektu zdefiniowano w nim polecenia:
 	\caption{Inicjacja Cluter'a SurfAdvisor - 2. Kops}
 \end{figure}
 
-\emph{kops} to open-source CLI do budowania \cw{Cluster}'ów Kubernetes na platformie AWS \cite{kops-k8s}.
-Stanowi alternatywę dla stosunkowo drogiego na start oficjalnego rozwiązania - EKS \cite{eks-pricing}.
+\emph{kops} to open-source CLI do budowania \cw{Cluster}'ów Kubernetes na platformie AWS ~\cite{kops-k8s}.
+Stanowi alternatywę dla stosunkowo drogiego na start oficjalnego rozwiązania - EKS ~\cite{eks-pricing}.
 
 Przy użyciu tego narzędzia dalszy ciąg skryptów, uruchomionych w ramach \emph{UserData} \textbf{KopsInstance} \emph{(\ref{iac:cf})}, buduje \cw{Node}'y składające się na \cw{Cluster}.
 
