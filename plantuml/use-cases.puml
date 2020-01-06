@@ -1,0 +1,45 @@
+@startuml
+left to right direction
+
+skinparam packageStyle rectangle
+actor Uzytkownik as U
+actor Administrator as A
+actor accounts.google.com as G << Google >>
+actor Firebase as F
+
+
+rectangle thesurfadvisor.com {
+  usecase UC_1 as "
+  Logowanie za pomoca konta Google"
+
+  usecase UC_2 as "
+  Przegladanie mapy spotów"
+
+  usecase UC_3 as "
+  Filtrowanie spotów wyswietlanych na mapie"
+
+  usecase UC_4 as "
+  Dodanie nowego spotu"
+
+  usecase UC_5 as "
+  Edycja danych spotu"
+
+  usecase UC_6 as "
+  Edycja literalów wyswietlanych \nw aplikacji mobilnej"
+}
+
+
+UC_2 .> UC_3 : <<includes>>
+
+UC_1 -- G
+UC_1 -- F
+U -- UC_1
+U -- UC_2
+U -- UC_3
+U -- UC_4
+A -- UC_5
+A -- UC_6
+
+U <. A : <<extends>>
+    
+@enduml

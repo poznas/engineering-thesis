@@ -1,3 +1,54 @@
 \chapter{Analiza wymagań}
 \label{cha:srs}
-max 4 strony klasyki: Użytkownicy, Granice Systemu, Wymagania funkcjonalne, Use Casy, Wymagania niefunkcjonalne…
+
+\section{Wymagania funkcjonalne}
+
+\begin{figure}[!ht]
+	\begin{center}
+		\includegraphics[width=1\textwidth]{out/plantuml/use-cases/use-cases.pdf}
+	\end{center}
+    \caption{Diagram przypadków użycia \emph{thesurfadvisor.com}}
+\end{figure}
+
+Przedmiotem tej pracy jest system nowych usług dla aplikacji \emph{SurfAdvisor} - \textbf{\emph{thesurfadvisor.com}}.
+Nowe rozszerzenie ma udostępniać:
+
+\begin{itemize}
+    \item
+    \textbf{Logowanie za pomocą konta Google}\\
+    Użytkownik ma mieć możliwość logowania poprzez swoje konto \emph{Google} tak jak w obecnej wersji aplikacji.
+    Autentykacją i autoryzacją będzie dalej zarządzać istniejący serwis \emph{Firebase}, do którego nowy system \emph{thesurfadvisor.com} będzie delegował ten aspekt.
+
+    \item
+    \textbf{Przeglądanie mapy spotów}\\
+    System przedstawia na mapie: 
+
+    \begin{itemize}
+    \item
+    Pojedyncze spoty w formie klikalnych punktów przekierowujących
+
+    \item
+    Gęste skupiska spotów w formie nieklikalnych punktów z informacją o ich liczbie.
+    Taka klasteryzacja będzie wykonywana po stronie serwerowej by nie obciążać aplikacji mobilnej.
+
+    \end{itemize}
+
+    \item
+    \textbf{Filtrowanie spotów wyświetlanych na mapie}\\
+    Zawartość mapy będzie można ograniczyć poprzez zastosowanie filtrowania po parametrach spotu.
+
+    \item
+    \textbf{Dodanie nowego spotu}\\
+    Trudno jest samemu skatalogować wszystkie spoty świata, stąd system będzie polegać na treści dodawanej przez użytkowników.
+
+    \item
+    \textbf{Edycja danych spotu}\\
+    Administracja \emph{SurfAdvisor} musi mieć możliwość edycji istniejących spotów w tym zmiany ich widoczności poprzez zmianę statusu.
+
+    \item
+    \textbf{Edycja literałów wyświetlanych w aplikacji mobilnej}\\
+    Wszystkie labelki w nowej aplikacji mobilnej będą pobierane z repozytorium literałów.
+    Pozwala to na modyfikację ich treści bez konieczności wypuszczania nowej wersji całego klienta.
+\end{itemize} 
+
+
