@@ -6,9 +6,11 @@
 \usepackage[english,polish]{babel}
 
 % Użyj polskiego łamania wyrazów (zamiast domyślnego angielskiego).
-\usepackage{polski}
-
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
 \usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\selectlanguage{polish}
 
 % dodatkowe pakiety
 
@@ -109,6 +111,8 @@ backend=bibtex
 % defines the X column to use m (\parbox[c]) instead of p (`parbox[t]`)
 \newcolumntype{C}[1]{>{\hsize=#1\hsize\centering\arraybackslash}X}
 
+\let\labelitemi\labelitemii
+
 
 %---------------------------------------------------------------------------
 
@@ -118,14 +122,14 @@ backend=bibtex
 %\titlePL{Przygotowanie bardzo długiej i pasjonującej pracy dyplomowej w~systemie~\LaTeX}
 %\titleEN{Preparation of a very long and fascinating bachelor or master thesis in \LaTeX}
 
-\titlePL{System lokalizacji spotów oparty na skalowalnej architekturze mikroserwisów dla aplikacji SurfAdvisor}
-\titleEN{Spot map system based on a scalable microservice architecture for SurfAdvisor application}
+\titlePL{System ofert szkoleń i obozów oparty na skalowalnej architekturze mikroserwisów dla aplikacji SurfAdvisor}
+\titleEN{Camp and training offerings system based on a scalable microservice architecture for SurfAdvisor application}
 
 
-\shorttitlePL{System mapy spotów oparty na skalowalnej architekturze mikroserwisów dla SurfAdvisor} % skrócona wersja tytułu jeśli jest bardzo długi
-\shorttitleEN{Spot map system based on a scalable microservice architecture for SurfAdvisor}
+\shorttitlePL{Nowe usługi oparte na skalowalnej architekturze mikroserwisów dla aplikacji SurfAdvisor} % skrócona wersja tytułu jeśli jest bardzo długi
+\shorttitleEN{New based on a scalable microservice architecture for aplikacji SurfAdvisor}
 
-\thesistype{Praca dyplomowa inżynierska}
+\thesistype{Projekt dyplomowy}
 %\thesistype{Master of Science Thesis}
 
 \supervisor{dr inż. Grzegorz Rogus}

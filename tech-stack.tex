@@ -42,7 +42,7 @@ Obraz możemy wybrać z bazowego zestawu Linux'ów i Windows'ów lub zasięgną�
 \subsection{DynamoDB}
 Baza danych NoSQL w pełni zarządzana przez AWS. 
 Zaimplementowana z myślą o wysokiej wydajności niezależnie od aktualnej skali, operacje realizowane są w jedno cyfrowej ilości milisekund.
-Od użytkownika wymaga się jedynie zdefiniować strukturę tabeli. Utrzymanie i skalowanie bierze na siebie AWS ~\cite{AWS-O}.
+Od użytkownika wymaga się jedynie zdefiniowania podstawowej struktury tabeli. Utrzymanie i skalowanie bierze na siebie AWS ~\cite{AWS-O}.
 
 \subsection{S3}
 Wszechstronny serwis do przechowywania plików, używany często przez inne produkty AWS {\em (np. DynamoDB przechowuje backup'y na S3)}. 
@@ -58,7 +58,7 @@ Obowiązkowe narzędzie przy pracy z większą ilością instancji produktów AW
 Całą swoją infrastrukturę definiuje się w czytelnym formacie pliku tekstowego {\em yaml} lub {\em json}.
 Z tak przygotowanym plikiem przełożenie definicji na świat rzeczywisty jest dosłownie jednym kliknięciem. 
 Równie łatwo wykonamy aktualizację lub pozbędziemy się wszystkich utworzonych produktów ~\cite{AWS-O}.
-Taką automatyzację udostępnia również open source'owy odpowiednik tego narzędzia - Terraform.
+Taką automatyzację udostępnia również open source'owy odpowiednik - Terraform.
 
 
 \section{Docker}
@@ -74,7 +74,7 @@ Uruchomienie takich jednostek jest dosyć wolne {\em (kilka minut)} ~\cite{docke
 
 Docker natomiast jest abstrakcją systemu operacyjnego. Kontenery dockera są odciążone od warstwy OS i zawierają tylko aplikację i potrzebne jej narzędzia.
 Każdy kontener działa jako wyizolowany proces. Są dużo lżejsze {\em (zazwyczaj dziesiątki MB)}, 
-więc ten host pomieści więcej aplikacji uruchomionych jako kontenery niż jako wirtualne maszyny ~\cite{docker-c}.
+więc ten sam host pomieści więcej aplikacji uruchomionych jako kontenery niż jako wirtualne maszyny ~\cite{docker-c}.
 
 \begin{figure}[h!]
 	\begin{center}
@@ -88,9 +88,9 @@ więc ten host pomieści więcej aplikacji uruchomionych jako kontenery niż jak
 
 \subsection{Docker image}
 Jest to plik złożony najczęściej z kilku warstw ~\cite{docker-doc}. 
-Najczęściej wszystkie warstwy oprócz wierchniej są \emph{read-only}, stanowią narzędzia wykorzystywane przez docelową wiechnią aplikację \emph{(np. java sdk)}.
+Najczęściej wszystkie warstwy oprócz wierzchniej są \emph{read-only}, stanowią narzędzia wykorzystywane przez docelową aplikację \emph{(np. java sdk)}.
 Najwyższa warstwa budowana jest przy pomocy pliku z instrukcją - \emph{\textbf{Dockerfile}}, gdzie dokładamy naszą aplikację.
-Przygotowany w ten sposób image jest gotowy do uruchomienia jako kontener. Dużym udogodnieniem dla użytkownika jest globalne publiczne repozytorium docker images - \emph{\textbf{hub.docker.com}}.
+Przygotowany w ten sposób image jest gotowy do uruchomienia jako kontener. Dużym udogodnieniem dla użytkownika jest globalnie publiczne repozytorium docker images - \emph{\textbf{hub.docker.com}}.
 
 
 \section{Kubernetes}
@@ -142,7 +142,7 @@ Całą strukturę kontenerów jak również i wszystkie inne potrzebne zasoby de
 \subsubsection{Cluster}
 \cw{Node} jest pojedynczą jednostką obliczeniową, może być to fizyczny komputer lub jak w większości przypadków - wirtualna maszyna. 
 \cw{Cluster} to grupa \cw{Node}'ów stanowiąca jeden organizm. 
-Wdrażając aplikacje nie specyfikujemy na którym \cw{Node}'ie mają stanąć nowe kontenery. Kubernetes nas w tym wręcza \emph{(\ref{bin-packing})}.
+Wdrażając aplikacje nie specyfikujemy na którym \cw{Node} mają stanąć nowe kontenery. Kubernetes nas w tym wręcza \emph{(\ref{bin-packing})}.
 
 \subsubsection{Pod}
 \cw{Pod} jest najmniejszym obiektem w świecie Kubernetes jaki możemy wdrożyć. Stanowi pojedynczą instancję aplikacji. 
@@ -177,7 +177,7 @@ Ruch jest następnie rozkładany pomiędzy cały \cw{ReplicaSet} aplikacji ~\cit
 
 \subsubsection{Ingress}
 Częstą praktyką jest utworzenie jednego punktu dostępu dla całego \cw{Cluster}’a. 
-Wdrażana jest wtedy jedną z implementacji \emph{Ingress Controller} (najpopularniejsza to \emph{nginx}, w projekcie używam \emph{Istio} [\ref{istio}]), która stanowi ruter dla pozostałych \cw{Service}’ów. 
+Wdrażana jest wtedy jedna z implementacji \emph{Ingress Controller} (najpopularniejsza to \emph{nginx}, w projekcie używany jest \emph{Istio} [\ref{istio}]), która stanowi ruter dla pozostałych \cw{Service}’ów. 
 \cw{Ingress} to obiekt definiujący rutowanie nadchodzących pakietów (np. na podstawie ścieżki http) ~\cite{k8s-cpts}.
 
 
@@ -193,7 +193,7 @@ Wdrażana jest wtedy jedną z implementacji \emph{Ingress Controller} (najpopula
 
 Wraz z transformacją z monolitycznej aplikacji do sieci mikroserwisów pojawia się wiele nowych problemów związanych z komunikacją pomiędzy nimi.
 Kubernetes nie dostarcza żadnego domyślnego rozwiązania, by nie ograniczyć doboru przez użytkownika.
-Istio jest jednym z nich, wypuszczone przez \emph{Lyft} i zaadaptowane później przez m.in. \emph{Google} i \emph{Microsoft}. ~\cite{istio-what}
+Istio jest jednym z nich, wypuszczone przez \emph{Lyft} i zaadaptowane później przez m.in. \emph{Google} i \emph{Microsoft}. ~\cite{istio-what}\\
 Istio zapewnia nam:
 
 \begin{itemize}
@@ -216,7 +216,7 @@ który stanowi proxy dla głównego kontenera aplikacji.
 Jenkins jest najpopularniejszym narzędziem do \textbf{CI \& CD} w branży. 
 Utrzymywany przez społeczność open source nadąża za zmianami w świecie programowania.
 Podstawowe funkcjonalności rozszerza bogaty zbiór pluginów.
-Jenkins może być wdrożony na wiele sposobów, w tym projekcie stawiam go jako docker container w środku \cw{Cluster}'a. 
+Jenkins może być wdrożony na wiele sposobów, w tym projekcie stawiany jest jako docker container w środku \cw{Cluster}'a. 
 
 \subsection{Jenkinsfile}
 Jest to plik \emph{(groovy syntax)}, w którym definiowany cały \textbf{\emph{pipeline}} - poszczególne kroki od zaciągnięcia plików źródłowych z SCM do wdrożenia na \cw{Cluster}.
